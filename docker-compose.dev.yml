@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    #restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./scripts/db/postgres/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  cache:
+    image: redis:6.2-alpine
+    #restart: always
+    ports:
+      - '6379:6379'
+        #TODO read pass from env file
+    command: redis-server --save 20 1 --loglevel warning --requirepass abc123
+    volumes:
+      - cache:/data
+
+
+  api:
+    container_name: walnut-api
+    build:
+      context: ./src/js/walnut-api/
+      dockerfile: deploy/docker/Dockerfile
+    depends_on:
+      - cache
+    ports:
+      - 3000:3000
+    environment:
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+        #TODO read pass from env file
+      REDIS_PASSWORD: abc123
+
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local
