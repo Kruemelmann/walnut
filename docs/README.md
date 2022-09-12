@@ -1,8 +1,12 @@
 # Documentation
 
+## Gui
+
+* [Overview](./gui/README.md)
+
 ## Architecture
 
-* [Overview](./architecture/Overview.md)
+* [Overview](./architecture/README.md)
 
 ## Managment
 
@@ -10,7 +14,7 @@
 
 ## Authentication
 
-* [Overview](./authentication/Overview.md)
+* [Overview](./authentication/README.md)
 * [Token](./authentication/Token.md)
 * [Internal](./authentication/Internal.md)
 * [LDAP](./authentication/LDAP.md)
