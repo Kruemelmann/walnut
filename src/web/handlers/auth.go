@@ -8,16 +8,19 @@ import (
 
 func JwtVerify(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// read token from header
 		var token = r.Header.Get("x-access-token")
 		json.NewEncoder(w).Encode(r)
 		token = strings.TrimSpace(token)
 
+		// check if token belongs to a valid user
 		if user, found := validateToken(token); found {
 			w.Write([]byte("Token found. Hello " + user + "\n"))
 		} else {
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
+
 		next.ServeHTTP(w, r)
 	})
 }
