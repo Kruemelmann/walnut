@@ -1,2 +1,0 @@
-# walnut-web
-
