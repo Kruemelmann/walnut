@@ -24,6 +24,10 @@ func (a *authServer) ValidateToken(ctx context.Context, in *walnut.ValidateToken
 	return &walnut.ValidateTokenResponse{
 		//TODO validate with the db
 		IsValid: isValid,
-		User:    &walnut.User{},
+		User: &walnut.User{
+			Username: "lukas",
+			Password: "123",
+			Role:     walnut.Role_ADMIN,
+		},
 	}, nil
 }
