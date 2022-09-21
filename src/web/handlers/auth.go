@@ -45,9 +45,10 @@ func validateToken(token string) (user *walnut.User, status bool) {
 	}
 	defer conn.Close()
 	c := walnut.NewAuthServiceClient(conn)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
+	//Validate Token with the Auth service
 	r, err := c.ValidateToken(ctx, &walnut.ValidateTokenRequest{
 		Token: token,
 	})
