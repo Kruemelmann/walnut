@@ -26,6 +26,10 @@ type Server struct {
 func (s *Server) Start() {
 	r := mux.NewRouter().StrictSlash(true)
 
+	//insecure handlers
+	r.HandleFunc("/login", handlers.LoginHandler)
+
+	//secure handler
 	secure := r.PathPrefix("/api").Subrouter()
 	secure.Use(handlers.JwtVerify)
 	secure.HandleFunc("/rules", handlers.RulesHandler)
