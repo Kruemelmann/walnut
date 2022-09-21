@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# create output folder
-mkdir genproto
+# create dir if not exist
+dldir="./genproto"
+[ ! -d "$dldir" ] && mkdir -p "$dldir"
 
 # make sure path contains the go binarys
 PATH=$PATH:$GOPATH/bin

@@ -1,8 +1,16 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
+	"log"
 	"net/http"
+	"time"
+
+	walnut "github.com/kruemelmann/walnut/src/web/genproto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type user struct {
@@ -21,6 +29,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//TODO check user with auth service and return with token to gui
+	t, err := login(u.Username, u.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+	} else {
+		u.Token = t
+	}
+	u.Password = ""
 
 	res, err := json.Marshal(u)
 	if err != nil {
@@ -30,4 +45,33 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(res)
 	return
+}
+
+//TODO refactor to own layer
+func login(username, password string) (string, error) {
+	// Set up a connection to the server.
+	conn, err := grpc.Dial(authservice_addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Printf("error: did not connect: %v", err)
+	}
+	defer conn.Close()
+	c := walnut.NewAuthServiceClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	//Validate Token with the Auth service
+	r, err := c.Login(ctx, &walnut.LoginRequest{
+		Username: username,
+		Password: password,
+	})
+
+	if err != nil {
+		log.Printf("error: could not login: %v", err)
+	}
+
+	if r.GetSuccessful() {
+		return r.GetToken(), nil
+	} else {
+		return "", errors.New("unable to login user " + err.Error())
+	}
 }

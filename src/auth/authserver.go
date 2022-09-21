@@ -31,3 +31,11 @@ func (a *authServer) ValidateToken(ctx context.Context, in *walnut.ValidateToken
 		},
 	}, nil
 }
+
+func (a *authServer) Login(ctx context.Context, in *walnut.LoginRequest) (*walnut.LoginResponse, error) {
+	//TODO implement
+	return &walnut.LoginResponse{
+		Successful: true,
+		Token:      "123",
+	}, nil
+}
