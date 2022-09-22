@@ -5,10 +5,11 @@
 User
 -
 ID PK int
-Username string INDEX
-Password string
-Role int FK >- Role.ID
+Username varchar(45) INDEX
+Password varchar(45) INDEX
+Role int FK - Role.ID INDEX
 LastLoggedin NULL date
+Token int FK - Token.ID
 
 ##
 UserTeam
@@ -21,25 +22,47 @@ User int FK >- User.ID
 Team
 -
 ID PK int
-Title string
+Title varchar(45)
+Token int FK - Token.ID
+
+##
+Token
+-
+ID PK int
+Title varchar(45)
+ExpiresAt NULL date
 
 ##
 Role
 -
 ID PK int
-Title string
+Title varchar(45)
 
 ##
 Module
 -
 ID PK int
-Kind int FK >- Kind.ID
-Creator int FK >- User.ID
+Url NULL varchar(200)
+Path NULL varchar(200)
+Kind int FK - ModuleKind.ID
+Visibility int FK - ModuleVisibility.ID
+Creator int FK - User.ID
+CreatedOn NULL date
+LastFetched NULL date
+LastUsaged NULL date
 
 ##
-Kind
+ModuleKind
 -
 ID PK int
-Title string
+Title varchar(45)
+
+##
+ModuleVisibility
+-
+ID PK int
+Title varchar(45)
+
+
 
 
