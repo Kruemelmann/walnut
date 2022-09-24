@@ -34,6 +34,7 @@ func (s *Server) Start() {
 	secure.Use(handlers.JwtVerify)
 	secure.HandleFunc("/rules", handlers.RulesHandler)
 
+	// handle the remaining routes with the gui code
 	r.PathPrefix("/").Handler(getStaticFilesHandler())
 
 	adress := s.Host + ":" + s.Port
