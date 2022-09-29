@@ -10,31 +10,33 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func main() {
-	log.Println("Starting walnut-data service")
-
-	//TODO isolate to own function
+func populateConextwithDB(ctx context.Context) context.Context {
 	db, err := sql.Open("postgres", "postgres://user:pass@localhost/bookstore")
 	if err != nil {
 		log.Fatal(err)
 	}
+	ctx = context.WithValue(ctx, "db_session", db)
+	ctx = context.WithValue(ctx, "db_kind", "postgres")
+	return ctx
+}
+
+func main() {
+	log.Println("Starting walnut-data service")
+
+	ctx := populateConextwithDB(context.Background())
 
 	//TODO isolate to own function
-	ctx := context.WithValue(context.Background(), "db_session", db)
-	ctx = context.WithValue(ctx, "db_kind", "postgres")
-
+	//FIXME remove thats just a test
 	rolerepo, err := role.NewRoleRepository(ctx)
 	if err != nil {
 		log.Fatalf("error %s\n", err)
 	}
-
-	//FIXME remove thats just a test
 	roles, err := rolerepo.GetRoles()
 	if err != nil {
 		log.Fatalf("error %s\n", err)
 	}
-
 	for k, v := range roles {
 		fmt.Println(k, v)
 	}
+	//FIXME =========== END
 }
