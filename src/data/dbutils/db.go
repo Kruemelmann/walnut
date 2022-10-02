@@ -1,9 +1,11 @@
-package main
+package dbutils
 
 import (
 	"context"
 	"database/sql"
 	"errors"
+
+	"github.com/google/uuid"
 )
 
 func ExtractDatabaseSession(ctx context.Context) (*sql.DB, string, error) {
@@ -14,4 +16,8 @@ func ExtractDatabaseSession(ctx context.Context) (*sql.DB, string, error) {
 	dbk := ctx.Value("db_kind").(string)
 
 	return db, dbk, nil
+}
+
+func GenerateUUID() string {
+	return uuid.NewString()
 }

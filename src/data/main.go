@@ -10,16 +10,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func populateConextwithDB(ctx context.Context) context.Context {
-	db, err := sql.Open("postgres", "postgres://user:pass@localhost/bookstore")
-	if err != nil {
-		log.Fatal(err)
-	}
-	ctx = context.WithValue(ctx, "db_session", db)
-	ctx = context.WithValue(ctx, "db_kind", "postgres")
-	return ctx
-}
-
 func main() {
 	log.Println("Starting walnut-data service")
 
@@ -39,4 +29,14 @@ func main() {
 		fmt.Println(k, v)
 	}
 	//FIXME =========== END
+}
+
+func populateConextwithDB(ctx context.Context) context.Context {
+	db, err := sql.Open("postgres", "postgres://user:pass@localhost/bookstore")
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx = context.WithValue(ctx, "db_session", db)
+	ctx = context.WithValue(ctx, "db_kind", "postgres")
+	return ctx
 }

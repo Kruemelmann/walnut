@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/kruemelmann/walnut/src/data/utils"
+	"github.com/kruemelmann/walnut/src/data/dbutils"
 )
 
 type Role struct {
@@ -21,7 +21,7 @@ type RoleRepository interface {
 }
 
 func NewRoleRepository(ctx context.Context) (RoleRepository, error) {
-	db, dbk, err := utils.ExtractDatabaseSession(ctx)
+	db, dbk, err := dbutils.ExtractDatabaseSession(ctx)
 	if err != nil {
 		log.Fatalf("Unable to extract db session from context %s\n", err)
 	}
