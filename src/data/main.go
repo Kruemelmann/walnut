@@ -3,10 +3,9 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 
-	"github.com/kruemelmann/walnut/src/data/role"
+	role "github.com/kruemelmann/walnut/src/data/template"
 	_ "github.com/lib/pq"
 )
 
@@ -15,20 +14,11 @@ func main() {
 
 	ctx := populateConextwithDB(context.Background())
 
-	//TODO isolate to own function
-	//FIXME remove thats just a test
-	rolerepo, err := role.NewRoleRepository(ctx)
+	//TODO remove this example after its running
+	_, err := role.NewRoleRepository(ctx)
 	if err != nil {
 		log.Fatalf("error %s\n", err)
 	}
-	roles, err := rolerepo.GetRoles()
-	if err != nil {
-		log.Fatalf("error %s\n", err)
-	}
-	for k, v := range roles {
-		fmt.Println(k, v)
-	}
-	//FIXME =========== END
 }
 
 func populateConextwithDB(ctx context.Context) context.Context {
