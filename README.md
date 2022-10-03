@@ -1,6 +1,7 @@
 # walnut
 
-walnut is an open source registry project for bazel modules.
+![GitHub Actions Build Status](https://github.com/kruemelmann/walnut/actions/workflows/build_test.yml/badge.svg)
+> walnut is an open source registry project for bazel modules.
 
 ## Requirements
 
