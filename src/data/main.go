@@ -9,6 +9,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
+//go:generate go run ./gen/repogen.go -entry role
+
 func main() {
 	log.Println("Starting walnut-data service")
 
