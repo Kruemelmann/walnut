@@ -6,7 +6,7 @@ dldir="./genproto"
 
 # make sure path contains the go binarys
 PATH=$PATH:$GOPATH/bin
-protodir=../../pb
+protodir=../../protos
 
 # executing the protoc command
 protoc --proto_path=$protodir \

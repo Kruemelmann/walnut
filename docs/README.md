@@ -14,7 +14,5 @@
 
 ## Authentication
 
-* [Overview](./authentication/README.md)
 * [Token](./authentication/Token.md)
 * [Internal](./authentication/Internal.md)
-* [LDAP](./authentication/LDAP.md)

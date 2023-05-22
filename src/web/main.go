@@ -1,19 +1,37 @@
 package main
 
 import (
-	"embed"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-//go:embed static/ui/dist
-var FrontendFS embed.FS
+var (
+	host = "localhost"
+	port = "8000"
+
+	cookieSessionID     = "walnut_session-id"
+	cookieSessionMaxAge = 60 * 60 * 10 // 10 hours
+)
+
+type ctxSessionID struct{}
+
+//TODO add the grpc bindings
+type webServer struct{}
 
 func main() {
-	//TODO read with viper
-	var (
-		host = "localhost"
-		port = "8000"
-	)
+	//ctx := context.Background()
 
-	srv := NewServer(host, port)
-	srv.Start()
+	ws := new(webServer)
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", ws.testHandler).Methods(http.MethodGet, http.MethodHead)
+
+	var handler http.Handler = r
+	handler = checkSessionID(handler)
+
+	adress := host + ":" + port
+	log.Println("Server started on " + adress)
+	log.Fatal(http.ListenAndServe(adress, handler))
 }
